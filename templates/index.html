@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body{
+                background-color: #454545;
+                text-align: center;
+                color: white;
+                font-family:Arial, Helvetica, sans-serif;
+            }
+            ::-webkit-scrollbar{
+                width:7.5px;
+            }
+            ::-webkit-scrollbar-thumb{
+                background-color: #232323;
+                border-radius: 3.75px;
+            }
+            .section{
+                display: inline-block;
+                border: solid white 3px;
+                border-radius: 5px;
+                height: 80vh;
+            }
+            #chat{
+                display: flex;
+                justify-content: center;
+                margin-top: 5%;
+            }
+            .title{
+                margin:0.5%;
+            }
+            #groupTab{
+                background-color: #232323;
+                width: 20%;
+                margin-right: 0.5%;
+                margin-left:5%;
+                position: relative;
+            }
+            #messageTab{
+                background-color: #000023;
+                width: 80%;
+                justify-content: center;
+                margin-right: 0;
+            }
+            #usersTab{
+                background-color: #230000;
+                width: 20%;
+                margin-left: 0.5%;
+                margin-right:5%;
+                position: relative;
+            }
+            #userlist{
+                padding:0;
+                margin:0;
+                top:0;
+                height: 95%;
+                overflow-y: auto;
+            }
+            .userIndex{
+                list-style-type: none;
+                margin:0;
+                height: 6.5%;
+                font-size: 12px;
+                color: #999999;
+                padding: 2px;
+                border: solid;
+                border-top:none;
+            }
+            #chatBox{
+                background-color: slategray;
+                width: 90%;
+                height: 80%;
+                border: solid white 1.5px;
+                border-radius: 8px;
+                margin-left: 5%;
+                margin-bottom: 1%;
+                display: flex;
+                flex-direction: column;
+                overflow-y:auto;
+            }
+            #messageInput{
+                border-radius: 8px;
+                margin:0;
+                width: 80%;
+                height: 3%;
+                padding-left: 1%;
+                border: solid 2px;
+            }
+            #send{
+                width: 10%;
+                border-radius: 5px;
+                border: solid 2px;
+                height: 5%;
+            }
+            #add{
+                margin:0;
+                width:100%;
+                color: #999999;
+                background-color: #232323;
+                position:absolute;
+                right: 0;
+                bottom: 0;
+                height: 8%;
+            }
+            #groups{
+                padding:0;
+                margin:0;
+                top:0;
+                height: 90%;
+                overflow-y:auto;
+            }
+            .groupIndex{
+                list-style-type: none;
+                margin: 0;
+                height:6.5%;
+                font-size: 12px;
+            }
+            .groupBtn{
+                background-color: #232323;
+                color: #999999;
+                width: 100%;
+                height:100%;
+                padding: 2px;
+                border-top: none;
+            }
+
+            .groupBtn:hover, #add:hover{
+                background-color: #121212;
+                color: #cccccc;
+            }
+            .userSent{
+                background-color: blue;
+
+                position: relative;
+                display: block;
+                width:fit-content;
+                max-width: 75%;
+
+                word-wrap: break-word;
+                border-radius: 5px;
+                padding-left: 10px;
+                padding-right: 10px;
+                padding-bottom: 5px;
+                margin-bottom: 1vh;
+                float: right;
+                margin-left:auto;
+                margin-right:1%;
+            }
+            .userReceived{
+                background-color: green;
+
+                position: relative;
+                display: block;
+                width:fit-content;
+                max-width: 75%;
+                
+                word-wrap: break-word;
+                border-radius: 5px;
+                padding-left: 10px;
+                padding-right: 10px;
+                padding-bottom: 5px;
+                margin-bottom: 1vh;
+                float:left;
+                margin-left:1%;
+            }
+        </style>
+        <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
+        <script src="{{ url_for('static', filename='index.js') }}"></script>
+        <title>Main Page</title>
+    </head>
+    <body>
+        <div id="login" hidden>
+            <h3>Enter Username:</h3>
+            <input id="nameEntry" placeholder="Type Here" type="text" autocomplete="off"/>
+            <button id="signIn">Enter</button>
+            <h4 id="warning"></h4>
+        </div>
+        <div id="chat">
+            <div class="section" id="groupTab">
+                <h3 class="title">Groups</h3>
+                <hr style="margin-bottom:0;"/>
+                <ul id="groups">
+                    <!--Groups will be listed here-->
+                    {% for group in groups %}
+
+                    <li class="groupIndex"><button class="groupBtn">{{group}}</button></li>
+
+                    {% endfor %}
+                </ul>
+                <button id="add">+ Add Group</button>
+            </div>
+            <div class="section" id="messageTab">
+                <h3 class="title">Messages</h3>
+                <hr style="margin-bottom:0;"/>
+                <h3 class="title" id="activeGroup">&thinsp;</h3>
+                <div id="chatBox">
+                    <!--Messages will be printed here-->
+                </div>
+                <input id="messageInput" type="text" autocomplete="off"/>
+                <button id="send">Send</button>
+            </div>
+            <div class="section" id="usersTab">
+                <h3 class="title">Users</h3>
+                <hr style="margin-bottom:0;"/>
+                <ul id="userlist">
+                    <!--Users will be listed here-->
+                    {% for user in users %}
+                    <li class="userIndex">{{user}}</li>
+                    
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>
